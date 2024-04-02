@@ -2,16 +2,15 @@
 .dropdown {
     color: #bfc5ca; /* Neutral color for text */
 }
-body {
-    background-color: #161d33; /* Dark background color */
-    color: #ffffff; /* Light text color for readability */
-    font-family: 'Roboto', sans-serif; /* Modern sans-serif font */
+body { background: linear-gradient(to right, #161d33, #242e4b); /* Gradient background */
 }
 .sidebar {
-    background-color: #1b2444; /* Light background color */
-    padding: 20px; /* Padding */
+    background-color: #ffffff; /* Light background color */
+    padding: 10px; /* Padding */
     border-right: 0px solid #dee2e6; /* Border on the right */
     color: #768db7; /* Dark text color for readability */
+    border-radius: 10px; /* Round the edges */
+    height: 175px; /* Adjust the height as desired */
 }
 .content {
     padding: 0;
@@ -20,7 +19,7 @@ body {
 
 .dropdown {
     color: #091723; /* Neutral color for text */
-    font-family: 'Roboto', sans-serif; /* Modern sans-serif font */
+    font-family: 'Helvetica', sans-serif; /* Modern sans-serif font */
     border: none; /* Remove the default border */
     background-color: #3d55aa; /* Dark background color */
     padding: 10px; /* Add some padding */
@@ -39,3 +38,22 @@ body {
     margin: auto; /* Center the graph container if desired */
     color:aqua;
 }
+.bar-graph {
+    color: #fff700;
+}
+/* In your assets/style.css file */
+.centered-container {
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: 90%; /* Full width if you want to center the graph's div */
+    height: 250px; /* Adjust the height as desired */
+}
+#desc-window {
+    color: #c1c1c1; /* or any color that makes the text readable */
+}
+#score-dis {
+    color: #FFFFFF; /* or any color that makes the text readable */
+}
+

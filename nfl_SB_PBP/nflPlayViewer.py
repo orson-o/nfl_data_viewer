@@ -2,13 +2,11 @@ import dash
 from dash import dcc, html, Input, Output
 import dash_bootstrap_components as dbc
 import pandas as pd
-
-import plotly.graph_objs as go
 from PIL import Image
 import base64
 from io import BytesIO
 import os
-from dash_bootstrap_templates import load_figure_template
+import plotly.graph_objects as go
 app = dash.Dash(external_stylesheets=[dbc.themes.CYBORG])
 
 # Get the current working directory
@@ -27,13 +25,21 @@ def pil_to_data_uri(img):
     img.save(data, "JPEG")
     data_uri = "data:image/jpeg;base64," + base64.b64encode(data.getvalue()).decode('utf-8')
     return data_uri
-
-# Load the PIL image and convert it to a Data URI
-pil_image_path = 'images/4840654.jpg'
+def pil_to_data_uri_logo(img):
+    data = BytesIO()
+    img.save(data, "PNG")
+    data_uri = "data:image/png;base64," + base64.b64encode(data.getvalue()).decode('utf-8')
+    return data_uri
+# run some code for applying logo image
+logo_path = 'nfl_SB_PBP/images/logo.png'
+pil_logo = Image.open(logo_path)
+logo_data_uri = pil_to_data_uri_logo(pil_logo)
+# same as ^ but for the field image
+pil_image_path = 'nfl/SB_PBP_images/4840654.jpg'
 pil_image = Image.open(pil_image_path)
 image_data_uri = pil_to_data_uri(pil_image)
 # Load the data
-df = pd.read_csv('data/sb_2000_2023.csv', low_memory=False)
+df = pd.read_csv('nfl_SB_PBP/data/sb_2000_2023.csv', low_memory=False)
 team_directions = df.groupby('game_id')['posteam'].unique().apply(lambda teams: {team: idx for idx, team in enumerate(teams)}).to_dict()
 # Initialize the Dash app
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -41,8 +47,8 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 # Define the sidebar layout for selecting game_id
 # Define the sidebar layout for selecting game_id
 sidebar = dbc.Col(
-    html.Div([
-        html.H2("Select Game", className="display-4"),
+    html.Div([        html.Img(src=logo_data_uri, style={'height':'100%', 'width':'100%'}),
+
         html.Hr(),
         dcc.Dropdown(
             id='game-id-dropdown',
@@ -62,11 +68,22 @@ content = dbc.Col(
         dbc.Row(
             [
                 dbc.Col(
-                    dcc.Graph(
-                        id='field-graph',
-                        figure={},
-                        config={'staticPlot': True}  # Disable zoom and pan
-                    ),
+                    [
+                        dcc.Graph(
+                            id='field-graph',
+                            figure={},
+                            config={'staticPlot': True}  # Disable zoom and pan
+                        ),
+                        dcc.Slider(
+                            id='time-slider',
+                            min=df['game_seconds_remaining'].min(),
+                            max=df['game_seconds_remaining'].max(),
+                            value=df['game_seconds_remaining'].min(),
+                            marks={str(time): str(time) for time in df['game_seconds_remaining'].unique()},
+                            updatemode='drag',
+                            
+                        ),
+                    ],
                     width=9,
                 ),
                 dbc.Col(
@@ -91,24 +108,12 @@ content = dbc.Col(
             ]
         ),
         dbc.Row(
-            [
-                dbc.Col(
-                    dcc.Slider(
-                        id='time-slider',
-                        min=df['game_seconds_remaining'].min(),
-                        max=df['game_seconds_remaining'].max(),
-                        value=df['game_seconds_remaining'].min(),
-                        marks={str(time): str(time) for time in df['game_seconds_remaining'].unique()},
-                        updatemode='drag'
-                    ),
-                    width=12,
-                ),
-            ]
-        ),
-        dbc.Row(
             dbc.Col(
-                dcc.Graph(
-                    id='line-graph',  # This is the correct placement for the line graph
+                dcc.Graph(className='centered-container',
+
+                    id='line-graph',
+                          style={'margin-top': '-100px'}, # Adjust the value as needed to move the graph up
+  # This is the correct placement for the line graph
                 ),
                 width=12,
             )
@@ -168,10 +173,11 @@ def update_output(selected_game_id, game_seconds_remaining):
         if play['posteam_type'] == 'home':
             end_yardline =100-play['yardline_100'] + play['yards_gained']
             start_yardline = 100-play['yardline_100']
+            dwn_distance = 100 -play['yardline_100']+play['ydstogo']
         else:
             end_yardline = play['yardline_100'] - play['yards_gained']
             start_yardline = play['yardline_100']
-
+            dwn_distance = play['yardline_100']-play['ydstogo']
         fig.add_shape(
             type="line",
             x0=start_yardline,
@@ -187,7 +193,32 @@ def update_output(selected_game_id, game_seconds_remaining):
             x1=end_yardline,
             y1=100,
             line=dict(color="red", width=5)
-    )
+        )
+
+        # Add an arrow
+        fig.add_annotation(
+            x=end_yardline,
+            y=50,
+            ax=start_yardline,
+            ay=50,
+            xref="x",
+            yref="y",
+            axref="x",
+            ayref="y",
+            showarrow=True,
+            arrowhead=2,
+            arrowsize=1,
+            arrowwidth=2,
+            arrowcolor="white"
+        )
+        fig.add_shape(
+            type="line",
+            x0=dwn_distance,
+            y0=0,
+            x1=dwn_distance,
+            y1=100,
+            line=dict(color="yellow", width=4)
+        )
             # Check if touchdown is 1
     if play['touchdown'] == 1:
         # Add a specific graphic to your figure
@@ -219,7 +250,7 @@ def update_output(selected_game_id, game_seconds_remaining):
         plot_bgcolor='#161d33',  # Set the background color to transparent
         # Remove width and height for true autosizing
     )
-    score_string = f"Down: {play['down']:.0f}"
+    score_string = f"Down: {play['down']:.0f} | Possession: {play['posteam']} | Time: {play['time']} | Quarter: {play['qtr']} "
    
 
     # Create a new Figure object
@@ -230,17 +261,20 @@ def update_output(selected_game_id, game_seconds_remaining):
         go.Bar(
             x=[play['home_team'], play['away_team']],
             y=[play['total_home_score'], play['total_away_score']],
-            marker_color=['blue', 'red'],  # Change the color of the bars
-            marker_line=dict(width=1),  # Change the width of the border
-
+            marker_color=[play['home_color'], play['away_color']],  # Change the color of the bars
+            marker_line=dict(width=5),  # Change the width of the border
             name='Scores'
         )
     ) 
+
+ 
     fig2.update_layout(
         autosize=True,
         margin=dict(l=10, r=10, t=10, b=10),  # Adjust the size of the margins
-        paper_bgcolor='#161d33',  # Set the background color of the entire figure
-        plot_bgcolor='#161d33',  # Set the background color to transparent
+        paper_bgcolor='#1b2444',  # Set the background color of the entire figure
+        plot_bgcolor='#1b2444',  # Set the background color to transparent
+        font=dict(color='white')  # Set the text color to green
+        
     )
     fig3 = go.Figure()
     # Assuming 'vegas_home_wpa' and 'game_time_remaining' are columns in filtered_df
@@ -260,7 +294,8 @@ def update_output(selected_game_id, game_seconds_remaining):
         margin=dict(l=20, r=20, t=40, b=20),
         paper_bgcolor='#161d33',
         plot_bgcolor='#161d33',
-        font=dict(color='white')
+        font=dict(color='white'),
+        
     )
 
     
