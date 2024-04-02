@@ -1,0 +1,41 @@
+
+.dropdown {
+    color: #bfc5ca; /* Neutral color for text */
+}
+body {
+    background-color: #161d33; /* Dark background color */
+    color: #ffffff; /* Light text color for readability */
+    font-family: 'Roboto', sans-serif; /* Modern sans-serif font */
+}
+.sidebar {
+    background-color: #1b2444; /* Light background color */
+    padding: 20px; /* Padding */
+    border-right: 0px solid #dee2e6; /* Border on the right */
+    color: #768db7; /* Dark text color for readability */
+}
+.content {
+    padding: 0;
+    margin: 100;
+}
+
+.dropdown {
+    color: #091723; /* Neutral color for text */
+    font-family: 'Roboto', sans-serif; /* Modern sans-serif font */
+    border: none; /* Remove the default border */
+    background-color: #3d55aa; /* Dark background color */
+    padding: 10px; /* Add some padding */
+    border-radius: 4px; /* Round the corners */
+    box-shadow: 0 3px 7px rgb(17 204 234 / 48%); /* Add a subtle shadow */
+    appearance: none; /* Remove the default arrow */
+    -webkit-appearance: none; /* Remove the default arrow (for Safari) */
+    -moz-appearance: none; /* Remove the default arrow (for Firefox) */
+    background-image: url('arrow.png'); /* Add a custom arrow */
+    background-repeat: no-repeat; /* Don't repeat the arrow image */
+    background-position: right center; /* Position the arrow on the right */
+}
+.small-bar-graph-container {
+    width: 75%; /* or any specific width */
+    height: 225px; /* or any specific height */
+    margin: auto; /* Center the graph container if desired */
+    color:aqua;
+}
