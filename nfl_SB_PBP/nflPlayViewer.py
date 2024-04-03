@@ -35,7 +35,7 @@ logo_path = 'nfl_SB_PBP/images/logo.png'
 pil_logo = Image.open(logo_path)
 logo_data_uri = pil_to_data_uri_logo(pil_logo)
 # same as ^ but for the field image
-pil_image_path = 'nfl/SB_PBP_images/4840654.jpg'
+pil_image_path = 'nfl_SB_PBP/images/4840654.jpg'
 pil_image = Image.open(pil_image_path)
 image_data_uri = pil_to_data_uri(pil_image)
 # Load the data
