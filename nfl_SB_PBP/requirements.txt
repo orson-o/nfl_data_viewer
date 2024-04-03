@@ -1,7 +1,0 @@
-dash==2.16.1
-dash_bootstrap_components
-base64
-BytesIO
-os
-plotly.graph_objects
-gunicorn
