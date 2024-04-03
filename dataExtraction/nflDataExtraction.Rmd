@@ -1,0 +1,25 @@
+```{r,echo=FALSE}
+library(plotly)
+library(tidyverse)
+library(nflfastR)
+```
+
+
+
+```{r}
+# makes the previous plot in a plotly 3d plot
+sb2000_2023 = fast_scraper_schedules(2000:2023)|>
+  dplyr::filter(game_type == "SB")|>
+  fast_scraper()
+```
+
+
+
+```{r}
+# mutate so that game_seconds_remaining is equal to game seconds played using a math function
+sb_2000_2023 = sb_2000_2023|>
+  mutate(game_seconds_remaining = 3600 - game_seconds_remaining)
+
+
+```
+
