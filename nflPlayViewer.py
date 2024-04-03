@@ -31,15 +31,15 @@ def pil_to_data_uri_logo(img):
     data_uri = "data:image/png;base64," + base64.b64encode(data.getvalue()).decode('utf-8')
     return data_uri
 # run some code for applying logo image
-logo_path = 'nfl_SB_PBP/images/logo.png'
+logo_path = 'images/logo.png'
 pil_logo = Image.open(logo_path)
 logo_data_uri = pil_to_data_uri_logo(pil_logo)
 # same as ^ but for the field image
-pil_image_path = 'nfl_SB_PBP/images/4840654.jpg'
+pil_image_path = 'images/4840654.jpg'
 pil_image = Image.open(pil_image_path)
 image_data_uri = pil_to_data_uri(pil_image)
 # Load the data
-df = pd.read_csv('nfl_SB_PBP/data/sb_2000_2023.csv', low_memory=False)
+df = pd.read_csv('data/sb_2000_2023.csv', low_memory=False)
 team_directions = df.groupby('game_id')['posteam'].unique().apply(lambda teams: {team: idx for idx, team in enumerate(teams)}).to_dict()
 # Initialize the Dash app
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
