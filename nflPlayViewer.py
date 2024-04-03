@@ -7,7 +7,7 @@ import base64
 from io import BytesIO
 import os
 import plotly.graph_objects as go
-app = dash.Dash(external_stylesheets=[dbc.themes.CYBORG])
+app = dash.Dash(__name__, suppress_callback_exceptions=True)
 # Get the current working directory
 cwd = os.getcwd()
 external_stylesheets = [
@@ -17,7 +17,6 @@ external_stylesheets = [
 
 # Build the path to the image
 image_path = os.path.join(cwd, 'my_dash_app', 'images', '4840654.jpg')
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 server = app.server
 # Function to convert PIL image to Data URI
 def pil_to_data_uri(img):
@@ -39,92 +38,12 @@ pil_image_path = 'images/4840654.jpg'
 pil_image = Image.open(pil_image_path)
 image_data_uri = pil_to_data_uri(pil_image)
 # Load the data
+
+# Initialize the Dash app
 df = pd.read_csv('data/sb_2000_2023.csv', low_memory=False)
 team_directions = df.groupby('game_id')['posteam'].unique().apply(lambda teams: {team: idx for idx, team in enumerate(teams)}).to_dict()
-# Initialize the Dash app
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-
 # Define the sidebar layout for selecting game_id
 # Define the sidebar layout for selecting game_id
-sidebar = dbc.Col(
-    html.Div([
-        html.Img(src=logo_data_uri, style={'height':'100%', 'width':'100%'}),
-        html.Hr(),
-        dcc.Dropdown(
-            
-            id='game-id-dropdown',
-            options=[{'label': game_id, 'value': game_id} for game_id in df['game_id'].unique()],
-            value=df['game_id'].iloc[0],
-            className='dropdown',
-            clearable=False,
-            style={'background-color':'#2b2b2b', 'color':'red'}
-
-        ),
-    ], className='sidebar'),
-    width=2,
-    style={'maxWidth': '200px'}  # Set the maximum width of the sidebar
-)
-
-# Define the main content layout with the football field image and description window
-# Adjusted content layout to include the line graph
-content = dbc.Col(
-    [
-        dbc.Row(
-            [
-                dbc.Col(
-                    [
-                        dcc.Graph(
-                            id='field-graph',
-                            figure={},
-                            config={'staticPlot': True}  # Disable zoom and pan
-                        ),
-                        dcc.Slider(
-                            id='time-slider',
-                            min=df['game_seconds_remaining'].min(),
-                            max=df['game_seconds_remaining'].max(),
-                            value=df['game_seconds_remaining'].min(),
-                            marks={str(time): str(time) for time in df['game_seconds_remaining'].unique()},
-                            updatemode='drag',
-                            
-                        ),
-                    ],
-                    width=9,
-                ),
-                dbc.Col(
-                    [
-                        html.Div(
-                            id='desc-window',
-                            className='desc-window',
-                            style={'overflow-y': 'scroll', 'height': '150px'},
-                        ),
-                        dcc.Graph(
-                            id='bar-graph',
-                            className='small-bar-graph-container'
-                        ),
-                        html.Div(
-                            id='score-dis',
-                            className='score-dis',
-                            style={'overflow-y': 'scroll', 'height': '200px'},
-                        ),
-                    ],
-                    width=3,
-                ),
-            ]
-        ),
-        dbc.Row(
-            dbc.Col(
-                dcc.Graph(className='centered-container',
-
-                    id='line-graph',
-                          style={'margin-top': '-100px'}, # Adjust the value as needed to move the graph up
-  # This is the correct placement for the line graph
-                ),
-                width=12,
-            )
-        ),
-    ],
-    width=10,
-)
 
 
 # Construct the app layout
