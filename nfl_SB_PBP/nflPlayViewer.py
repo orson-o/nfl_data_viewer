@@ -8,7 +8,6 @@ from io import BytesIO
 import os
 import plotly.graph_objects as go
 app = dash.Dash(external_stylesheets=[dbc.themes.CYBORG])
-
 # Get the current working directory
 cwd = os.getcwd()
 external_stylesheets = [
@@ -19,6 +18,7 @@ external_stylesheets = [
 # Build the path to the image
 image_path = os.path.join(cwd, 'my_dash_app', 'images', '4840654.jpg')
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
+server = app.server
 # Function to convert PIL image to Data URI
 def pil_to_data_uri(img):
     data = BytesIO()
@@ -259,7 +259,8 @@ def update_output(selected_game_id, game_seconds_remaining):
 
     # Create a new Figure object
     fig2 = go.Figure()
-
+    if play["home_team"]=="CAR":
+        home_image = "nfl_SB_PBP/images/team_logos/arizona-cardinals.svg"
     # Add a bar graph for the home and away teams
     fig2.add_trace(
         go.Bar(
@@ -270,6 +271,7 @@ def update_output(selected_game_id, game_seconds_remaining):
             name='Scores'
         )
     ) 
+
 
  
     fig2.update_layout(
