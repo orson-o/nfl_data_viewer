@@ -1,6 +1,6 @@
 
 .dropdown {
-    color: #bfc5ca; /* Neutral color for text */
+    color: #00ffdd; /* Neutral color for text */
 }
 body { background: linear-gradient(to right, #161d33, #242e4b); /* Gradient background */
 }
@@ -9,7 +9,6 @@ body { background: linear-gradient(to right, #161d33, #242e4b); /* Gradient back
     padding: 10px; /* Padding */
     border-right: 0px solid #dee2e6; /* Border on the right */
     color: #768db7; /* Dark text color for readability */
-    border-radius: 10px; /* Round the edges */
     height: 175px; /* Adjust the height as desired */
 }
 .content {
@@ -23,7 +22,6 @@ body { background: linear-gradient(to right, #161d33, #242e4b); /* Gradient back
     border: none; /* Remove the default border */
     background-color: #3d55aa; /* Dark background color */
     padding: 10px; /* Add some padding */
-    border-radius: 4px; /* Round the corners */
     box-shadow: 0 3px 7px rgb(17 204 234 / 48%); /* Add a subtle shadow */
     appearance: none; /* Remove the default arrow */
     -webkit-appearance: none; /* Remove the default arrow (for Safari) */

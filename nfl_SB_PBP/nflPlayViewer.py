@@ -47,18 +47,22 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 # Define the sidebar layout for selecting game_id
 # Define the sidebar layout for selecting game_id
 sidebar = dbc.Col(
-    html.Div([        html.Img(src=logo_data_uri, style={'height':'100%', 'width':'100%'}),
-
+    html.Div([
+        html.Img(src=logo_data_uri, style={'height':'100%', 'width':'100%'}),
         html.Hr(),
         dcc.Dropdown(
+            
             id='game-id-dropdown',
             options=[{'label': game_id, 'value': game_id} for game_id in df['game_id'].unique()],
             value=df['game_id'].iloc[0],
             className='dropdown',
-            clearable=False
+            clearable=False,
+            style={'background-color':'#2b2b2b', 'color':'red'}
+
         ),
     ], className='sidebar'),
-    width=2
+    width=2,
+    style={'maxWidth': '200px'}  # Set the maximum width of the sidebar
 )
 
 # Define the main content layout with the football field image and description window
