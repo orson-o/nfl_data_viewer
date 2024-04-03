@@ -128,10 +128,71 @@ content = dbc.Col(
 
 
 # Construct the app layout
-app.layout = dbc.Container(
-    dbc.Row([sidebar, content]),
-    fluid=True
-)
+app.layout = dbc.Container([
+    dbc.Row([
+        dbc.Col(
+            html.Div([
+                html.Img(src=logo_data_uri, style={'height': '100%', 'width': '100%'}),
+                html.Hr(),
+                dcc.Dropdown(
+                    id='game-id-dropdown',
+                    options=[{'label': game_id, 'value': game_id} for game_id in df['game_id'].unique()],
+                    value=df['game_id'].iloc[0],
+                    className='dropdown',
+                    clearable=False,
+                    style={'background-color': '#2b2b2b', 'color': 'red'}
+                ),
+            ], className='sidebar'),
+            width=2,
+            style={'maxWidth': '200px'}  # Set the maximum width of the sidebar
+        ),
+        dbc.Col([
+            dbc.Row([
+                dbc.Col([
+                    dcc.Graph(
+                        id='field-graph',
+                        figure={},
+                        config={'staticPlot': True}  # Disable zoom and pan
+                    ),
+                    dcc.Slider(
+                        id='time-slider',
+                        min=df['game_seconds_remaining'].min(),
+                        max=df['game_seconds_remaining'].max(),
+                        value=df['game_seconds_remaining'].min(),
+                        marks={str(time): str(time) for time in df['game_seconds_remaining'].unique()},
+                        updatemode='drag',
+                    ),
+                ], width=9),
+                dbc.Col([
+                    html.Div(
+                        id='desc-window',
+                        className='desc-window',
+                        style={'overflow-y': 'scroll', 'height': '150px'},
+                    ),
+                    dcc.Graph(
+                        id='bar-graph',
+                        className='small-bar-graph-container'
+                    ),
+                    html.Div(
+                        id='score-dis',
+                        className='score-dis',
+                        style={'overflow-y': 'scroll', 'height': '200px'},
+                    ),
+                ], width=3),
+            ]),
+            dbc.Row(
+                dbc.Col(
+                    dcc.Graph(
+                        id='line-graph',
+                        className='centered-container',
+                        style={'margin-top': '-100px'},  # Adjust the value as needed to move the graph up
+                    ),
+                    width=12,
+                )
+            ),
+        ], width=10),
+    ]),
+], fluid=True)
 
 # Callback to update the football field and description window based on the selected game_id and time
 @app.callback(
