@@ -7,13 +7,10 @@ import base64
 from io import BytesIO
 import os
 import plotly.graph_objects as go
-app = dash.Dash(__name__, suppress_callback_exceptions=True)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 # Get the current working directory
 cwd = os.getcwd()
-external_stylesheets = [
-    dbc.themes.BOOTSTRAP,
-    "https://fonts.googleapis.com/css2?family=Roboto&display=swap"
-]
+
 
 # Build the path to the image
 image_path = os.path.join(cwd, 'my_dash_app', 'images', '4840654.jpg')
@@ -40,6 +37,7 @@ image_data_uri = pil_to_data_uri(pil_image)
 # Load the data
 
 # Initialize the Dash app
+# app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 df = pd.read_csv('data/sb_2000_2023.csv', low_memory=False)
 team_directions = df.groupby('game_id')['posteam'].unique().apply(lambda teams: {team: idx for idx, team in enumerate(teams)}).to_dict()
 # Define the sidebar layout for selecting game_id
