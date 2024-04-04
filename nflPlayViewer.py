@@ -73,11 +73,11 @@ app.layout = dbc.Container([
                     ),
                     dcc.Slider(
                         id='time-slider',
-                        min=df['game_seconds_remaining'].min(),
-                        max=df['game_seconds_remaining'].max(),
-                        value=df['game_seconds_remaining'].min(),
-                        marks={str(time): str(time) for time in df['game_seconds_remaining'].unique()},
+
+                        value=df['...1'].min(),
+                        marks={str(time): str(time) for time in df['...1'].unique()},
                         updatemode='drag',
+                       
                     ),
                 ], width=9),
                 dbc.Col([
@@ -123,7 +123,7 @@ app.layout = dbc.Container([
 
 
 def update_output(selected_game_id, game_seconds_remaining):
-    filtered_df = df[(df['game_id'] == selected_game_id) & (df['game_seconds_remaining'] <= game_seconds_remaining)]
+    filtered_df = df[(df['game_id'] == selected_game_id) & (df['...1'] <= game_seconds_remaining)]
 
     # Create figure
     fig = go.Figure()
@@ -265,21 +265,26 @@ def update_output(selected_game_id, game_seconds_remaining):
     # Ensure filtered_df is sorted by 'game_time_remaining' if it's not already
     fig3.add_trace(
         go.Scatter(
-            x=filtered_df['game_seconds_remaining'],
+            x=filtered_df['...1'],
             y=filtered_df['home_wp_post'],
             mode='lines+markers',
             name='Vegas Home WPA'
         )
     )
+    fig3.update_xaxes(
+        tickvals=filtered_df['...1']*10,
+
+        ticktext=[i for i in range(len(filtered_df['...1']),10)]
+    )
+    
     fig3.update_layout(
         title='Win Probability Added (WPA) for Home Team Over Time',
-        xaxis_title='Game Time Played (Seconds)',
+        xaxis_title='Play Number',
         yaxis_title='Vegas Home WPA',
         margin=dict(l=20, r=20, t=40, b=20),
         paper_bgcolor='#161d33',
         plot_bgcolor='#161d33',
         font=dict(color='white'),
-        
     )
 
     
@@ -288,13 +293,41 @@ def update_output(selected_game_id, game_seconds_remaining):
        
 
 @app.callback(
+    [Output('time-slider', 'min'), Output('time-slider', 'max')],
+    [Input('game-id-dropdown', 'value')]
+)
+def update_slider_range(selected_game_id):
+    filtered_df = df[df['game_id'] == selected_game_id]
+    min_time = filtered_df['...1'].min()
+    max_time = filtered_df['...1'].max()
+    return min_time, max_time
+@app.callback(
+    Output('time-slider', 'step'),
+    Input('game-id-dropdown', 'value')  # Assuming this is the ID of your dropdown
+)
+def update_step(selected_game_id):
+    # Filter the DataFrame based on the selected game ID
+    filtered_df = df[df['game_id'] == selected_game_id]
+
+    # Calculate the new step value
+    step = (filtered_df['...1'].max() - filtered_df['...1'].min()) / len(filtered_df['...1'].unique())
+
+    return step
+@app.callback(
     Output('time-slider', 'marks'),
     [Input('game-id-dropdown', 'value')]
 )
 def update_slider_marks(selected_game_id):
-    unique_times = df[df['game_id'] == selected_game_id]['game_seconds_remaining'].unique()
-    return {time: str(time) for time in unique_times}
+    # Filter the DataFrame based on the selected game ID
+    filtered_df = df[df['game_id'] == selected_game_id]
 
+    # Get the unique values in the '...1' column
+    unique_values = filtered_df['...1'].unique()
+
+    # Create a dictionary where the keys and values are the unique values
+    marks = {str(value) : str(value) for value in unique_values}
+
+    return marks
 
 if __name__ == '__main__':
     app.run_server(debug=True)
