@@ -1,15 +1,17 @@
 
 .dropdown {
     color: #00ffdd; /* Neutral color for text */
+    border-radius:5px;
 }
 body { background: linear-gradient(to right, #161d33, #242e4b); /* Gradient background */
 }
 .sidebar {
-    background-color: #ffffff; /* Light background color */
+    background-color: #268d62; /* Light background color */
     padding: 10px; /* Padding */
     border-right: 0px solid #dee2e6; /* Border on the right */
     color: #768db7; /* Dark text color for readability */
     height: 175px; /* Adjust the height as desired */
+    border-radius: 5px;
 }
 .content {
     padding: 0;
@@ -54,4 +56,21 @@ body { background: linear-gradient(to right, #161d33, #242e4b); /* Gradient back
 #score-dis {
     color: #FFFFFF; /* or any color that makes the text readable */
 }
+/* Hide the marks' labels for a slider with the class 'time-slider' */
+#time-slider .rc-slider-mark-text {
+    display: none !important;
+}
 
+/* Optional: Adjust the bottom margin of the slider track to reduce space */
+#time-slider .rc-slider-rail,
+#time-slider .rc-slider-track {
+    margin-bottom: -10px !important; /* Adjust as needed */
+}
+.btnImg{
+    border-radius: 25px; /* Rounded corners */
+}
+/* Style for when the button is clicked and held */
+.btnImg:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}

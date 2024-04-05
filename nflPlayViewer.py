@@ -10,6 +10,8 @@ import plotly.graph_objects as go
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 # Get the current working directory
 cwd = os.getcwd()
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
 
 
 # Build the path to the image
@@ -34,6 +36,10 @@ logo_data_uri = pil_to_data_uri_logo(pil_logo)
 pil_image_path = 'images/4840654.jpg'
 pil_image = Image.open(pil_image_path)
 image_data_uri = pil_to_data_uri(pil_image)
+# load the play button image
+play_img_path = 'images/play_pause.png'
+play_img = Image.open(play_img_path)
+play_img_src = pil_to_data_uri_logo(play_img)
 # Load the data
 
 # Initialize the Dash app
@@ -57,7 +63,7 @@ app.layout = dbc.Container([
                     value=df['game_id'].iloc[0],
                     className='dropdown',
                     clearable=False,
-                    style={'background-color': '#2b2b2b', 'color': 'red'}
+                    style={'background-color': '#fffff', 'color': 'red'}
                 ),
             ], className='sidebar'),
             width=2,
@@ -70,10 +76,17 @@ app.layout = dbc.Container([
                         id='field-graph',
                         figure={},
                         config={'staticPlot': True}  # Disable zoom and pan
-                    ),
+                    ),    html.Img(id='play-pause-button', src=play_img_src, className = 'btnImg', n_clicks=0, style={'cursor': 'pointer', 'height': '50px'}),
+
+dcc.Interval(
+    id='auto-stepper',
+    interval=1*1000,  # in milliseconds (e.g., 1000ms = 1 second per step)
+    n_intervals=0,
+    disabled=True,  # Initially disabled
+),
                     dcc.Slider(
                         id='time-slider',
-
+                        className='time-slider',
                         value=df['...1'].min(),
                         marks={str(time): str(time) for time in df['...1'].unique()},
                         updatemode='drag',
@@ -328,6 +341,47 @@ def update_slider_marks(selected_game_id):
     marks = {str(value) : str(value) for value in unique_values}
 
     return marks
+@app.callback(
+    Output('auto-stepper', 'disabled'),
+    [Input('play-pause-button', 'n_clicks')],
+    [State('auto-stepper', 'disabled')],
+)
+def toggle_interval(n_clicks, is_disabled):
+    if n_clicks:
+        return not is_disabled
+    return is_disabled
+@app.callback(
+    Output('time-slider', 'value'),
+    [Input('auto-stepper', 'n_intervals')],
+    [State('time-slider', 'value'),
+     State('time-slider', 'max')]
+)
+def update_slider(n_intervals, current_value, max_value):
+    if current_value is None:
+        return 0
+    new_value = (current_value + 1)
+    return new_value
+from dash import callback_context
+
+# @app.callback(
+#     Output('play-pause-button', 'style'),
+#     [Input('play-pause-button', 'n_clicks')],
+#     [State('play-pause-button', 'style')]
+# )
+# def toggle_play_pause_style(n_clicks, current_style):
+#     if n_clicks is None:
+#         raise PreventUpdate
+    
+#     triggered_id = callback_context.triggered[0]['prop_id'].split('.')[0]
+#     if triggered_id == 'play-pause-button':
+#         if current_style and 'boxShadow' in current_style:
+#             # Assuming play was active, so remove the shadow to indicate pause
+#             return {**current_style, 'boxShadow': '', 'transform': ''}
+#         else:
+#             # Play was not active, so add the shadow to indicate play
+#             return {**current_style, 'boxShadow': '0 0 10px red', 'transform': 'scale(1.0)'}
+#     else:
+#         return current_style
 
 if __name__ == '__main__':
     app.run_server(debug=True)
