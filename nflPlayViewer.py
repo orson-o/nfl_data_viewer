@@ -90,7 +90,7 @@ dcc.Interval(
                         value=df['...1'].min(),
                         marks={str(time): str(time) for time in df['...1'].unique()},
                         updatemode='drag',
-                       
+
                     ),
                 ], width=9),
                 dbc.Col([
@@ -126,9 +126,9 @@ dcc.Interval(
 
 # Callback to update the football field and description window based on the selected game_id and time
 @app.callback(
-    [Output('field-graph', 'figure'), 
-     Output('bar-graph', 'figure'), 
-     Output('desc-window', 'children'), 
+    [Output('field-graph', 'figure'),
+     Output('bar-graph', 'figure'),
+     Output('desc-window', 'children'),
      Output('score-dis', 'children'),
      Output('line-graph', 'figure')],  # Target output for the line graph
     [Input('game-id-dropdown', 'value'), Input('time-slider', 'value')]
@@ -227,11 +227,11 @@ def update_output(selected_game_id, game_seconds_remaining):
             line=dict(color="red", width=3),
             fillcolor="red"
         )
-    
+
 
     # Add the football field image
 
-    
+
 
     # Hide axis line, grid, ticklabels and title
     fig.update_xaxes(showline=False, zeroline=False, tickvals=[], title_text='')
@@ -246,7 +246,7 @@ def update_output(selected_game_id, game_seconds_remaining):
         # Remove width and height for true autosizing
     )
     score_string = f"Down: {play['down']:.0f} | Possession: {play['posteam']} | Time: {play['time']} | Quarter: {play['qtr']} "
-   
+
 
     # Create a new Figure object
     fig2 = go.Figure()
@@ -261,17 +261,17 @@ def update_output(selected_game_id, game_seconds_remaining):
             marker_line=dict(width=5),  # Change the width of the border
             name='Scores'
         )
-    ) 
+    )
 
 
- 
+
     fig2.update_layout(
         autosize=True,
         margin=dict(l=10, r=10, t=10, b=10),  # Adjust the size of the margins
         paper_bgcolor='#1b2444',  # Set the background color of the entire figure
         plot_bgcolor='#1b2444',  # Set the background color to transparent
         font=dict(color='white')  # Set the text color to green
-        
+
     )
     fig3 = go.Figure()
     # Assuming 'vegas_home_wpa' and 'game_time_remaining' are columns in filtered_df
@@ -289,7 +289,7 @@ def update_output(selected_game_id, game_seconds_remaining):
 
         ticktext=[i for i in range(len(filtered_df['...1']),10)]
     )
-    
+
     fig3.update_layout(
         title='Win Probability Added (WPA) for Home Team Over Time',
         xaxis_title='Play Number',
@@ -300,10 +300,10 @@ def update_output(selected_game_id, game_seconds_remaining):
         font=dict(color='white'),
     )
 
-    
+
     return fig,fig2, play['desc'], score_string,fig3
 # Display the figure in a new window
-       
+
 
 @app.callback(
     [Output('time-slider', 'min'), Output('time-slider', 'max')],
@@ -371,7 +371,7 @@ from dash import callback_context
 # def toggle_play_pause_style(n_clicks, current_style):
 #     if n_clicks is None:
 #         raise PreventUpdate
-    
+
 #     triggered_id = callback_context.triggered[0]['prop_id'].split('.')[0]
 #     if triggered_id == 'play-pause-button':
 #         if current_style and 'boxShadow' in current_style:
