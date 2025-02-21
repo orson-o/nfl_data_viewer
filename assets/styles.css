@@ -3,10 +3,10 @@
     color: #00ffdd; /* Neutral color for text */
     border-radius:5px;
 }
-body { background: linear-gradient(to right, #b9c0d8, hsl(276, 80%, 30%)); /* Gradient background */
+body { background: linear-gradient(to right, #b9c0d8, #017f98); /* Gradient background */
 }
 .sidebar {
-    background-color: #268d62; /* Light background color */
+    background-color: #036031; /* Light background color */
     padding: 10px; /* Padding */
     border-right: 0px solid #dee2e6; /* Border on the right */
     color: #768db7; /* Dark text color for readability */
@@ -72,5 +72,5 @@ body { background: linear-gradient(to right, #b9c0d8, hsl(276, 80%, 30%)); /* Gr
 /* Style for when the button is clicked and held */
 .btnImg:active {
     transform: scale(0.95);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 5px rgba(0, 244, 0, 0.2);
 }

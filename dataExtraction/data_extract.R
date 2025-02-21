@@ -1,7 +1,7 @@
 library(plotly)
 library(tidyverse)
 library(nflfastR)
-sb2000_2023 = fast_scraper_schedules(2000:2023)|>
+sb2000_2023 = fast_scraper_schedules(2000:2024)|>
   dplyr::filter(game_type == "SB")|>
   fast_scraper()
 sb_2000_2023 = sb_2000_2023|>

@@ -55,7 +55,7 @@ app.layout = dbc.Container([
     dbc.Row([
         dbc.Col(
             html.Div([
-                html.Img(src=logo_data_uri, style={'height': '100%', 'width': '100%'}),
+                html.Img(src=logo_data_uri, style={'height': '0%', 'width': '0%'}),
                 html.Hr(),
                 dcc.Dropdown(
                     id='game-id-dropdown',
@@ -76,7 +76,7 @@ app.layout = dbc.Container([
                         id='field-graph',
                         figure={},
                         config={'staticPlot': True}  # Disable zoom and pan
-                    ),    html.Img(id='play-pause-button', src=play_img_src, className = 'btnImg', n_clicks=0, style={'cursor': 'pointer', 'height': '50px'}),
+                    ),    html.Img(id='play-pause-button', src=play_img_src, className = 'btnImg', n_clicks=0, style={'cursor': 'pointer', 'height': '50px', 'background-color': '#fffff'}),
 
 dcc.Interval(
     id='auto-stepper',
