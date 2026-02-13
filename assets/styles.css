@@ -3,13 +3,13 @@
     color: #00ffdd; /* Neutral color for text */
     border-radius:5px;
 }
-body { background: linear-gradient(to right, #b9c0d8, #017f98); /* Gradient background */
+body { background: #161d33; /* Gradient background */
 }
 .sidebar {
-    background-color: #036031; /* Light background color */
+    background-color: #161d33; /* Light background color */
     padding: 10px; /* Padding */
-    border-right: 0px solid #dee2e6; /* Border on the right */
-    color: #768db7; /* Dark text color for readability */
+    border-right: 0px solid #f72900; /* Border on the right */
+    color: #f15a0f00; /* Dark text color for readability */
     height: 175px; /* Adjust the height as desired */
     border-radius: 5px;
 }
@@ -22,9 +22,9 @@ body { background: linear-gradient(to right, #b9c0d8, #017f98); /* Gradient back
     color: #091723; /* Neutral color for text */
     font-family: 'Helvetica', sans-serif; /* Modern sans-serif font */
     border: none; /* Remove the default border */
-    background-color: #3d55aa; /* Dark background color */
+    background-color: #aa773d; /* Dark background color */
     padding: 10px; /* Add some padding */
-    box-shadow: 0 3px 7px rgb(17 204 234 / 48%); /* Add a subtle shadow */
+    box-shadow: 0 3px 7px rgba(6, 196, 225, 0.48); /* Add a subtle shadow */
     appearance: none; /* Remove the default arrow */
     -webkit-appearance: none; /* Remove the default arrow (for Safari) */
     -moz-appearance: none; /* Remove the default arrow (for Firefox) */
@@ -74,3 +74,4 @@ body { background: linear-gradient(to right, #b9c0d8, #017f98); /* Gradient back
     transform: scale(0.95);
     box-shadow: 0 2px 5px rgba(0, 244, 0, 0.2);
 }
+

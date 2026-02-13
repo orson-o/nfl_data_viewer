@@ -44,7 +44,7 @@ play_img_src = pil_to_data_uri_logo(play_img)
 
 # Initialize the Dash app
 # app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-df = pd.read_csv('data/sb_2000_2023.csv', low_memory=False)
+df = pd.read_csv('data/dataExtraction/sb_2000_2023.csv', low_memory=False)
 team_directions = df.groupby('game_id')['posteam'].unique().apply(lambda teams: {team: idx for idx, team in enumerate(teams)}).to_dict()
 # Define the sidebar layout for selecting game_id
 # Define the sidebar layout for selecting game_id
@@ -383,5 +383,6 @@ from dash import callback_context
 #     else:
 #         return current_style
 
-if __name__ == '__main__':
-    app.run_server(debug=True)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8050))
+    app.run_server(host="0.0.0.0", port=port)
