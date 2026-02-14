@@ -33,28 +33,36 @@ body { background: #161d33; /* Gradient background */
     background-position: right center; /* Position the arrow on the right */
 }
 .small-bar-graph-container {
-    width: 75%; /* or any specific width */
-    height: 225px; /* or any specific height */
-    margin: auto; /* Center the graph container if desired */
-    color:aqua;
+    width: 100%;
+    height: 225px;
+    margin: 0 auto;
+    color: aqua;
+    position: relative;
+    overflow: hidden;
+}
+.small-bar-graph-container .js-plotly-plot,
+.small-bar-graph-container .plot-container {
+    height: 100% !important;
+    width: 100% !important;
 }
 .bar-graph {
     color: #fff700;
 }
 /* In your assets/style.css file */
 .centered-container {
-    position: absolute;
-    top: 75%;
-    left: 50%;
-    transform: translate(-50%, 0%);
-    width: 90%; /* Full width if you want to center the graph's div */
+    position: relative;
+    width: 90%;
     height: 250px; /* Adjust the height as desired */
+    margin: 10px auto 0;
 }
 #desc-window {
     color: #c1c1c1; /* or any color that makes the text readable */
 }
 #score-dis {
     color: #FFFFFF; /* or any color that makes the text readable */
+}
+#field-graph {
+    height: 350px;
 }
 /* Hide the marks' labels for a slider with the class 'time-slider' */
 #time-slider .rc-slider-mark-text {

@@ -75,7 +75,11 @@ app.layout = dbc.Container([
                     dcc.Graph(
                         id='field-graph',
                         figure={},
-                        config={'staticPlot': True}  # Disable zoom and pan
+                        config={
+                            'staticPlot': True,  # Disable zoom and pan
+                            'responsive': True,
+                            'displayModeBar': False
+                        }
                     ),    html.Img(id='play-pause-button', src=play_img_src, className = 'btnImg', n_clicks=0, style={'cursor': 'pointer', 'height': '50px', 'background-color': '#fffff'}),
 
 dcc.Interval(
@@ -101,7 +105,9 @@ dcc.Interval(
                     ),
                     dcc.Graph(
                         id='bar-graph',
-                        className='small-bar-graph-container'
+                        className='small-bar-graph-container',
+                        style={'height': '225px'},
+                        config={'responsive': True, 'displayModeBar': False}
                     ),
                     html.Div(
                         id='score-dis',
@@ -115,7 +121,8 @@ dcc.Interval(
                     dcc.Graph(
                         id='line-graph',
                         className='centered-container',
-                        style={'margin-top': '-100px'},  # Adjust the value as needed to move the graph up
+                        style={'margin-top': '-30px'},
+                        config={'responsive': True, 'displayModeBar': False}
                     ),
                     width=12,
                 )
@@ -291,6 +298,7 @@ def update_output(selected_game_id, game_seconds_remaining):
     )
 
     fig3.update_layout(
+        autosize=True,
         title='Win Probability Added (WPA) for Home Team Over Time',
         xaxis_title='Play Number',
         yaxis_title='Vegas Home WPA',
